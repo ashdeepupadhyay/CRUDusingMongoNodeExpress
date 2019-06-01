@@ -9,6 +9,6 @@ router.get('/',(req,res)=>{
 });
 
 router.post('/',(req,res)=>{
-    console.log("hi");
+    console.log(req.body);
 });
 module.exports = router;
