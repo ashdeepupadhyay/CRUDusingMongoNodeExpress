@@ -12,7 +12,18 @@ router.get('/',(req,res)=>{
 });
 
 router.get('/list',(req,res)=>{
-   res.json('from list');
+   Employee.find((err,docs)=>{
+       if(!err){
+            console.log("fetch list"+docs.length);
+            res.render("employee/list",{
+                list:docs
+            });
+       }
+       else{
+           console.log('Error in retrieving employee list :'+err);
+       }
+
+   })
 });
 
 router.post('/',(req,res)=>{
