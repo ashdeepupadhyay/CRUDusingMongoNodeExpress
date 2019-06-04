@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/EmployeeDB',{useNewUrlParser:true},(err)=>{
+mongoose.connect('mongodb://localhost:27017/EmployeeDB',{useNewUrlParser:true,useFindAndModify: false },(err)=>{
     if(!err){
         console.log('MongoDB Connection Succeeded');
     }else{

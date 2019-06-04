@@ -27,9 +27,35 @@ router.get('/list',(req,res)=>{
 });
 
 router.post('/',(req,res)=>{
-    insertRecords(req,res);
+    if(req.body._id=='')
+    {
+        insertRecords(req,res);
+    }else{
+        console.log("update record");
+        updateRecord(req,res);
+    }
 });
+function updateRecord(req,res){
+    Employee.findOneAndUpdate({ _id : req.body_id },req.body,{new : true},(err,doc)=>{//if doc don't have any new value then new will be false
+        if(!err)
+        {
+            console.log("record updated");
+            res.redirect('employee/list');
+        }
+        else{
+            if(err.name == 'ValidationError'){
+                handleValidationError(err,req.body);
+                res.render('employee/addOrEdit',{
+                    viewTitle : "Update Employee",
+                    employee: req.body
+                })
+            }else{
+                console.log('error during record insertion :'+err);
+            }
 
+        }
+    });
+}
 function insertRecords(req,res){
     var employee = new Employee();
     employee.fullName = req.body.fullName;
@@ -50,7 +76,9 @@ function insertRecords(req,res){
                         employee: req.body
                     })
                 }
-            console.log('error during record insertion :'+err);
+                else{
+                    console.log('error during record insertion :'+err);
+                }
         }
     });
 }
@@ -69,4 +97,19 @@ function handleValidationError(err, body) {
         }
     }
 }
+
+router.get('/:id',(req,res)=>{
+    console.log("IN Update");
+    Employee.findById(req.params.id,(err,doc)=>{
+        if(!err)
+        {
+            res.render("employee/addOrEdit",{
+            viewTitle: "Update Employee",
+            employee : doc
+            });
+        }else{
+            
+        }
+    });
+});
 module.exports = router;
