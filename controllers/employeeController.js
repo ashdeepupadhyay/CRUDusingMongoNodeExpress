@@ -35,8 +35,10 @@ router.post('/',(req,res)=>{
         updateRecord(req,res);
     }
 });
+
+
 function updateRecord(req,res){
-    Employee.findOneAndUpdate({ _id : req.body_id },req.body,{new : true},(err,doc)=>{//if doc don't have any new value then new will be false
+    Employee.findOneAndUpdate(req.params.id, {$set: req.body}, function (err, product) {
         if(!err)
         {
             console.log("record updated");
@@ -114,7 +116,7 @@ router.get('/:id',(req,res)=>{
 });
 
 router.get('/delete/:id',(req,res)=>{
-    Employee.findByIdAndRemove(req.param.id,(err,doc)=>{
+    Employee.findOneAndDelete(req.param.id,(err,doc)=>{
         if(!err){
             console.log("deleted");
             res.redirect('/employee/list');
